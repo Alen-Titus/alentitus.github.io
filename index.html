@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Alen Titus - Terminal</title>
+  <title>Alen Titus - Cyber Terminal</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-    body {
+    html, body {
       margin: 0;
-      background: radial-gradient(ellipse at center, #0f0f0f 0%, #000000 100%);
+      padding: 0;
+      height: 100%;
+      background: radial-gradient(ellipse at center, #0d0d0d 0%, #000000 100%);
       color: #39ff14;
       font-family: 'Share Tech Mono', monospace;
       overflow: hidden;
@@ -22,85 +24,54 @@
       z-index: -1;
     }
     .terminal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
       padding: 2rem;
+      box-sizing: border-box;
+    }
+    .content {
+      background-color: rgba(0, 0, 0, 0.7);
+      border: 2px solid #39ff14;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 0 15px #39ff14;
+      max-width: 900px;
+      font-size: 1rem;
+      line-height: 1.6;
       white-space: pre-wrap;
     }
-    .input-line {
-      display: flex;
-    }
-    .prompt {
-      margin-right: 5px;
-    }
-    .cursor {
-      display: inline-block;
-      background-color: #39ff14;
-      width: 10px;
-      height: 18px;
-      animation: blink 0.8s infinite;
-      vertical-align: middle;
-    }
-    input {
-      background: transparent;
-      border: none;
-      color: #39ff14;
-      font: inherit;
-      outline: none;
-      width: 100%;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
+    .cyber-glow {
+      text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14;
     }
   </style>
 </head>
 <body>
 <canvas id="matrixCanvas"></canvas>
-<pre class="terminal" id="terminal"></pre>
-<script>
-const terminal = document.getElementById('terminal');
-const promptText = '└─$';
-const responses = {
-  whoami: "👋 I'm Alen Titus",
-  projects: "🔹 GitHub: https://github.com/Alen-Titus\n🔹 CVE Tools, AI-powered exploit automation, simulation interfaces.",
-  github: "🔗 https://github.com/Alen-Titus",
-  linkedin: "🔗 https://linkedin.com/in/alen-titus",
-  help: "Available commands: whoami, projects, github, linkedin, clear",
-  banner: `   ____  _       __         \n  / __ \(_)___  / /____  ___\n / / / / / __ \/ __/ _ \/ _ \\\n/ /_/ / / / / / /_/  __/  __/\n\____/_/_/ /_/\__/\___/\___/`
-};
-function printLine(text) {
-  terminal.innerHTML += text + "\n";
-  terminal.scrollTop = terminal.scrollHeight;
-}
-function newPrompt() {
-  const line = document.createElement('div');
-  line.className = 'input-line';
-  line.innerHTML = `<span class="prompt">${promptText}</span><input type="text" autofocus />`;
-  terminal.appendChild(line);
-  const input = line.querySelector('input');
-  input.focus();
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      const cmd = input.value.trim();
-      input.disabled = true;
-      if (cmd === 'clear') {
-        terminal.innerHTML = '';
-      } else {
-        printLine(`${promptText} ${cmd}`);
-        printLine(responses[cmd] || `Command not found: ${cmd}`);
-      }
-      newPrompt();
-    }
-  });
-  terminal.scrollTop = terminal.scrollHeight;
-}
-newPrompt();
+<div class="terminal">
+  <div class="content cyber-glow">
+┌──(AlenTitus㉿cyberlab)-[~]
+└─$ whoami
+👋 I'm Alen Titus
 
-// Matrix effect
+> Offensive Security Engineer | Red Team Developer | AI Hacker
+
+> I craft tools that mimic adversaries, automate red teaming, and bend AI to simulate breaches.
+> My work focuses on turning LLMs into intrusion artists, running simulated attacks, and building smart detection evasion.
+
+⚔️  Skilled in: PowerShell, Python, WinRM, MITRE ATT&CK, Exploit-DB, Streamlit, LLM prompt engineering
+🚩 Projects: Automated exploit orchestration | AI-driven adversary simulator | Security log intelligence engine
+🎯 Goal: Empower SOCs and Red Teams with tactical edge through smart automation.
+  </div>
+</div>
+
+<script>
 const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
-const matrixChars = "アァイィウエカガキギクグケゲコゴサabcdefghijklmnopqrstuvwxyz0123456789";
+const matrixChars = "アァイィウカキクケコサabcdefghijklmnopqrstuvwxyz0123456789";
 const fontSize = 14;
 const columns = canvas.width / fontSize;
 const drops = Array.from({ length: columns }).fill(1);

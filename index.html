@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Alen Titus - Cyberpunk Terminal</title>
+  <title>Alen Titus - Terminal</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
     body {
       margin: 0;
       background: radial-gradient(ellipse at center, #0f0f0f 0%, #000000 100%);
@@ -14,25 +13,24 @@
       font-family: 'Share Tech Mono', monospace;
       overflow: hidden;
     }
-
-    .matrix {
+    canvas {
       position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       z-index: -1;
-      background: black;
-      overflow: hidden;
     }
-
-    canvas {
-      display: block;
-    }
-
     .terminal {
       padding: 2rem;
       white-space: pre-wrap;
     }
-
+    .input-line {
+      display: flex;
+    }
+    .prompt {
+      margin-right: 5px;
+    }
     .cursor {
       display: inline-block;
       background-color: #39ff14;
@@ -41,86 +39,80 @@
       animation: blink 0.8s infinite;
       vertical-align: middle;
     }
-
+    input {
+      background: transparent;
+      border: none;
+      color: #39ff14;
+      font: inherit;
+      outline: none;
+      width: 100%;
+    }
     @keyframes blink {
       0%, 100% { opacity: 1; }
       50% { opacity: 0; }
-    }
-
-    a {
-      color: #33ffff;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-shadow: 0 0 5px #33ffff;
     }
   </style>
 </head>
 <body>
 <canvas id="matrixCanvas"></canvas>
 <pre class="terminal" id="terminal"></pre>
-
 <script>
 const terminal = document.getElementById('terminal');
-const lines = [
-  "┌──(AlenTitus㉿cyberlab)-[~]",
-  "└─$ whoami",
-  "👋 I'm Alen Titus",
-  "",
-  "└─$ skills",
-  "💥 Offensive Security | 🧬 Log Analysis | ⚙️ Exploit Engineering",
-  "🤖 Local LLMs | 📡 Remote Simulations | 🛠️ Python, PowerShell, Streamlit",
-  "",
-  "└─$ projects",
-  "🔹 CVE Exploits: https://github.com/Alen-Titus",
-  "🔹 AI + Red Teaming Tools",
-  "",
-  "└─$ contact",
-  "🔗 LinkedIn: https://linkedin.com/in/alen-titus",
-  "💻 GitHub: https://github.com/Alen-Titus",
-  "",
-  "└─$ echo \"✨ Simulate. Exploit. Automate. Repeat. ✨\"",
-  "",
-];
-
-let i = 0;
-function typeLine() {
-  if (i < lines.length) {
-    terminal.innerHTML += lines[i++] + "\n";
-    setTimeout(typeLine, 150);
-  } else {
-    terminal.innerHTML += "<span class='cursor'></span>";
-  }
+const promptText = '└─$';
+const responses = {
+  whoami: "👋 I'm Alen Titus",
+  projects: "🔹 GitHub: https://github.com/Alen-Titus\n🔹 CVE Tools, AI-powered exploit automation, simulation interfaces.",
+  github: "🔗 https://github.com/Alen-Titus",
+  linkedin: "🔗 https://linkedin.com/in/alen-titus",
+  help: "Available commands: whoami, projects, github, linkedin, clear",
+  banner: `   ____  _       __         \n  / __ \(_)___  / /____  ___\n / / / / / __ \/ __/ _ \/ _ \\\n/ /_/ / / / / / /_/  __/  __/\n\____/_/_/ /_/\__/\___/\___/`
+};
+function printLine(text) {
+  terminal.innerHTML += text + "\n";
+  terminal.scrollTop = terminal.scrollHeight;
 }
-typeLine();
+function newPrompt() {
+  const line = document.createElement('div');
+  line.className = 'input-line';
+  line.innerHTML = `<span class="prompt">${promptText}</span><input type="text" autofocus />`;
+  terminal.appendChild(line);
+  const input = line.querySelector('input');
+  input.focus();
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const cmd = input.value.trim();
+      input.disabled = true;
+      if (cmd === 'clear') {
+        terminal.innerHTML = '';
+      } else {
+        printLine(`${promptText} ${cmd}`);
+        printLine(responses[cmd] || `Command not found: ${cmd}`);
+      }
+      newPrompt();
+    }
+  });
+  terminal.scrollTop = terminal.scrollHeight;
+}
+newPrompt();
 
-// Matrix animation
+// Matrix effect
 const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
-
-const matrixChars = "アァイィウエカガキギクグケゲコゴサザシジスズセゼソゾタチッツヅテデトドナニヌネハヒフヘホマミムメヤユヨラリルレロワヲンabcdefghijklmnopqrstuvwxyz0123456789";
+const matrixChars = "アァイィウエカガキギクグケゲコゴサabcdefghijklmnopqrstuvwxyz0123456789";
 const fontSize = 14;
 const columns = canvas.width / fontSize;
 const drops = Array.from({ length: columns }).fill(1);
-
 function drawMatrix() {
   ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-
   ctx.fillStyle = "#39ff14";
   ctx.font = `${fontSize}px 'Share Tech Mono'`;
-
   for (let i = 0; i < drops.length; i++) {
     const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
     ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-      drops[i] = 0;
-    }
-
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
     drops[i]++;
   }
 }
@@ -128,4 +120,3 @@ setInterval(drawMatrix, 50);
 </script>
 </body>
 </html>
-

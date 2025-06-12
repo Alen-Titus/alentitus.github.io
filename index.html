@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alen Titus - Cyber Terminal</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
@@ -10,22 +10,22 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+      background: radial-gradient(circle at center, #0f0c29 0%, #302b63 50%, #000 100%);
       color: #00ffe7;
       font-family: 'Share Tech Mono', monospace;
       overflow: hidden;
     }
     .terminal {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
       padding: 2rem;
       box-sizing: border-box;
-      animation: neon-glow 2s infinite alternate;
     }
     .content {
-      background-color: rgba(0, 0, 0, 0.6);
+      background-color: rgba(0, 0, 0, 0.5);
       border: 2px solid #00ffe7;
       border-radius: 10px;
       padding: 2rem;
@@ -34,35 +34,81 @@
       font-size: 1rem;
       line-height: 1.6;
       white-space: pre-wrap;
+      animation: neon-glow 2s infinite alternate, glitch 3s infinite;
     }
     .cyber-glow {
       text-shadow: 0 0 10px #00ffe7, 0 0 20px #00ffe7;
-      animation: typewriter 4s steps(40, end) 1s 1 normal both, glitch 2s infinite;
-      overflow: hidden;
-      border-right: .15em solid #00ffe7;
-      white-space: nowrap;
+    }
+    .hud {
+      position: absolute;
+      top: 10%;
+      right: 5%;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 2px solid #00ffe7;
+      animation: rotateHud 12s linear infinite;
+      box-shadow: 0 0 15px #00ffe7 inset;
+    }
+    .hud::before, .hud::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    .hud::before {
+      width: 100px;
+      height: 100px;
+      border: 2px dashed #00ffe7;
+    }
+    .hud::after {
+      width: 60px;
+      height: 60px;
+      border: 2px solid #00ffe7;
+    }
+    .controls {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid #00ffe7;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+    }
+    .controls button {
+      background: transparent;
+      border: 1px solid #00ffe7;
+      color: #00ffe7;
+      padding: 0.3rem 0.6rem;
+      font-family: 'Share Tech Mono', monospace;
+      cursor: pointer;
     }
     @keyframes neon-glow {
       from { box-shadow: 0 0 5px #00ffe7; }
       to { box-shadow: 0 0 20px #00ffe7, 0 0 30px #00ffe7 inset; }
     }
-    @keyframes typewriter {
-      from { width: 0 }
-      to { width: 100% }
-    }
     @keyframes glitch {
-      0% { text-shadow: 2px 2px #ff00c8, -2px -2px #00ffe7; }
-      20% { text-shadow: -2px -2px #ff00c8, 2px 2px #00ffe7; }
-      40% { text-shadow: 2px -2px #ff00c8, -2px 2px #00ffe7; }
-      60% { text-shadow: -2px 2px #ff00c8, 2px -2px #00ffe7; }
-      80% { text-shadow: 2px 2px #ff00c8, -2px -2px #00ffe7; }
-      100% { text-shadow: 0 0 10px #00ffe7; }
+      0%, 100% { text-shadow: 2px 2px #ff00c8, -2px -2px #00ffe7; }
+      25% { text-shadow: -2px -2px #ff00c8, 2px 2px #00ffe7; }
+      50% { text-shadow: 2px -2px #ff00c8, -2px 2px #00ffe7; }
+      75% { text-shadow: -2px 2px #ff00c8, 2px -2px #00ffe7; }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.6; }
+    }
+    @keyframes rotateHud {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-<div class="terminal">
-  <div class="content cyber-glow">
+  <div class="terminal">
+    <div class="content cyber-glow">
 ┌──(AlenTitus㉿cyberlab)-[~]
 └─$ whoami
 👋 I'm Alen Titus
@@ -75,11 +121,30 @@
 ⚔️  Skilled in: PowerShell, Python, WinRM, MITRE ATT&CK, Exploit-DB, Streamlit, LLM prompt engineering
 🚩 Projects: Automated exploit orchestration | AI-driven adversary simulator | Security log intelligence engine
 🎯 Goal: Empower SOCs and Red Teams with tactical edge through smart automation.
+    </div>
+    <div class="hud"></div>
   </div>
-</div>
-<audio autoplay loop>
-  <source src="https://filesamples.com/samples/audio/mp3/sample3.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+
+  <div class="controls">
+    <button onclick="toggleAudio()">🔊 Toggle Music</button>
+  </div>
+
+  <audio id="bg-music" autoplay loop>
+    <source src="https://filesamples.com/samples/audio/mp3/sample3.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    function toggleAudio() {
+      const audio = document.getElementById("bg-music");
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+  </script>
 </body>
 </html>
+
+

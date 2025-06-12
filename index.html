@@ -3,55 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Alen Titus - Terminal</title>
+  <title>Alen Titus - Cyberpunk Terminal</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
     body {
-      background-color: #0d0d0d;
-      color: #33ff33;
-      font-family: monospace;
+      margin: 0;
+      background: radial-gradient(ellipse at center, #0f0f0f 0%, #000000 100%);
+      color: #39ff14;
+      font-family: 'Share Tech Mono', monospace;
+      overflow: hidden;
+    }
+
+    .matrix {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: black;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    .terminal {
       padding: 2rem;
       white-space: pre-wrap;
-      min-height: 100vh;
     }
+
     .cursor {
       display: inline-block;
-      background-color: #33ff33;
+      background-color: #39ff14;
       width: 10px;
       height: 18px;
       animation: blink 0.8s infinite;
       vertical-align: middle;
     }
+
     @keyframes blink {
-      0%   { opacity: 1; }
-      50%  { opacity: 0; }
-      100% { opacity: 1; }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
     }
+
     a {
-      color: #33ffcc;
+      color: #33ffff;
       text-decoration: none;
     }
+
     a:hover {
-      text-decoration: underline;
+      text-shadow: 0 0 5px #33ffff;
     }
   </style>
 </head>
 <body>
-<pre id="terminal"></pre>
+<canvas id="matrixCanvas"></canvas>
+<pre class="terminal" id="terminal"></pre>
+
 <script>
 const terminal = document.getElementById('terminal');
-
 const lines = [
   "┌──(AlenTitus㉿cyberlab)-[~]",
   "└─$ whoami",
   "👋 I'm Alen Titus",
   "",
   "└─$ skills",
-  "💥 Offensive Security | 🧬 Event Log Analysis | ⚙️ Exploit Engineering",
-  "🤖 Local LLMs | 📡 Remote Adversary Simulation | 🛠️ Python, PowerShell, Streamlit",
+  "💥 Offensive Security | 🧬 Log Analysis | ⚙️ Exploit Engineering",
+  "🤖 Local LLMs | 📡 Remote Simulations | 🛠️ Python, PowerShell, Streamlit",
   "",
   "└─$ projects",
-  "🔹 Auto-generated CVE Exploits: https://github.com/Alen-Titus",
-  "🔹 Red teaming automation tools using LLMs + WinRM",
+  "🔹 CVE Exploits: https://github.com/Alen-Titus",
+  "🔹 AI + Red Teaming Tools",
   "",
   "└─$ contact",
   "🔗 LinkedIn: https://linkedin.com/in/alen-titus",
@@ -71,6 +94,37 @@ function typeLine() {
   }
 }
 typeLine();
+
+// Matrix animation
+const canvas = document.getElementById('matrixCanvas');
+const ctx = canvas.getContext('2d');
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+
+const matrixChars = "アァイィウエカガキギクグケゲコゴサザシジスズセゼソゾタチッツヅテデトドナニヌネハヒフヘホマミムメヤユヨラリルレロワヲンabcdefghijklmnopqrstuvwxyz0123456789";
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+const drops = Array.from({ length: columns }).fill(1);
+
+function drawMatrix() {
+  ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#39ff14";
+  ctx.font = `${fontSize}px 'Share Tech Mono'`;
+
+  for (let i = 0; i < drops.length; i++) {
+    const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+
+    drops[i]++;
+  }
+}
+setInterval(drawMatrix, 50);
 </script>
 </body>
 </html>

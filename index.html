@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alen Titus - Terminal</title>
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #33ff33;
+      font-family: monospace;
+      padding: 2rem;
+      white-space: pre-wrap;
+      min-height: 100vh;
+    }
+    .cursor {
+      display: inline-block;
+      background-color: #33ff33;
+      width: 10px;
+      height: 18px;
+      animation: blink 0.8s infinite;
+      vertical-align: middle;
+    }
+    @keyframes blink {
+      0%   { opacity: 1; }
+      50%  { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    a {
+      color: #33ffcc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<pre id="terminal"></pre>
+<script>
+const terminal = document.getElementById('terminal');
+
+const lines = [
+  "┌──(AlenTitus㉿cyberlab)-[~]",
+  "└─$ whoami",
+  "👋 I'm Alen Titus",
+  "",
+  "└─$ skills",
+  "💥 Offensive Security | 🧬 Event Log Analysis | ⚙️ Exploit Engineering",
+  "🤖 Local LLMs | 📡 Remote Adversary Simulation | 🛠️ Python, PowerShell, Streamlit",
+  "",
+  "└─$ projects",
+  "🔹 Auto-generated CVE Exploits: https://github.com/Alen-Titus",
+  "🔹 Red teaming automation tools using LLMs + WinRM",
+  "",
+  "└─$ contact",
+  "🔗 LinkedIn: https://linkedin.com/in/alen-titus",
+  "💻 GitHub: https://github.com/Alen-Titus",
+  "",
+  "└─$ echo \"✨ Simulate. Exploit. Automate. Repeat. ✨\"",
+  "",
+];
+
+let i = 0;
+function typeLine() {
+  if (i < lines.length) {
+    terminal.innerHTML += lines[i++] + "\n";
+    setTimeout(typeLine, 150);
+  } else {
+    terminal.innerHTML += "<span class='cursor'></span>";
+  }
+}
+typeLine();
+</script>
+</body>
+</html>

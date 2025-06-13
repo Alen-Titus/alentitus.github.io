@@ -4,99 +4,118 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alen Titus - Cyberpunk Terminal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <title>Alen Titus - Cyberpunk Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      height: 100vh;
-      font-family: 'Share Tech Mono', monospace;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      color: #00ffe7;
       overflow: hidden;
-      position: relative;
+      background: radial-gradient(ellipse at center, #0f0c29, #302b63, #24243e);
+      font-family: 'Orbitron', sans-serif;
+      color: #00ffe7;
     }
 
-    .overlay-gradient {
+    .cursor-effect {
       position: fixed;
-      width: 300px;
-      height: 300px;
+      width: 200px;
+      height: 200px;
       pointer-events: none;
-      background: radial-gradient(circle, rgba(0, 255, 231, 0.3), transparent 70%);
+      background: radial-gradient(circle, rgba(0, 255, 231, 0.15), transparent 60%);
       border-radius: 50%;
       z-index: 0;
       transform: translate(-50%, -50%);
       transition: top 0.1s, left 0.1s;
     }
 
-    .terminal {
+    .title {
       position: absolute;
-      bottom: 40px;
-      left: 40px;
-      background: linear-gradient(145deg, #111827, #1f2937);
-      border: 2px solid #00ffe7;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 0 20px #00ffe7;
-      z-index: 1;
+      top: 8%;
+      width: 100%;
+      text-align: center;
+      font-size: 2em;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
     }
 
-    .terminal pre {
-      margin: 0;
-      font-size: 1.2em;
-      line-height: 1.8em;
-    }
-
-    .hud {
+    .grid-bg {
       position: absolute;
-      top: 10%;
-      left: 60%;
-      transform: translate(-50%, -50%);
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      border: 2px solid #00ffe7;
-      animation: rotate 6s linear infinite;
-      z-index: 1;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 0;
     }
 
-    .hud::before {
-      content: "";
+    .scanner {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 10px;
-      height: 10px;
-      background: #00ffe7;
+      width: 250px;
+      height: 250px;
       border-radius: 50%;
+      border: 2px solid #00ffe7;
       transform: translate(-50%, -50%);
+      animation: spin 5s linear infinite;
+      box-shadow: 0 0 20px #00ffe7;
     }
 
-    @keyframes rotate {
+    .scanner::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: #00ffe7;
+      top: 50%;
+      left: 0;
+      animation: scan 2s ease-in-out infinite;
+    }
+
+    @keyframes scan {
+      0% { top: 0%; }
+      50% { top: 100%; }
+      100% { top: 0%; }
+    }
+
+    @keyframes spin {
       0% { transform: translate(-50%, -50%) rotate(0deg); }
       100% { transform: translate(-50%, -50%) rotate(360deg); }
     }
 
+    .about {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid #00ffe7;
+      border-radius: 8px;
+      padding: 20px;
+      width: 400px;
+      color: #0ff;
+      font-size: 1rem;
+      text-shadow: 0 0 3px #0ff;
+      z-index: 1;
+    }
+
     .bars {
       position: absolute;
-      bottom: 20px;
-      right: 20px;
+      bottom: 10px;
+      right: 10px;
       display: flex;
-      gap: 5px;
+      gap: 6px;
       z-index: 1;
     }
 
     .bar {
-      width: 10px;
-      height: 40px;
+      width: 12px;
+      height: 50px;
       background: #00ffe7;
-      animation: pulse 1s infinite ease-in-out;
+      animation: pulse 1.2s infinite ease-in-out;
     }
 
-    .bar:nth-child(2) { animation-delay: 0.1s; }
-    .bar:nth-child(3) { animation-delay: 0.2s; }
-    .bar:nth-child(4) { animation-delay: 0.3s; }
-    .bar:nth-child(5) { animation-delay: 0.4s; }
+    .bar:nth-child(2) { animation-delay: 0.15s; }
+    .bar:nth-child(3) { animation-delay: 0.3s; }
+    .bar:nth-child(4) { animation-delay: 0.45s; }
+    .bar:nth-child(5) { animation-delay: 0.6s; }
 
     @keyframes pulse {
       0%, 100% { transform: scaleY(1); }
@@ -109,31 +128,32 @@
       left: 20px;
       padding: 10px 20px;
       border: 1px solid #00ffe7;
-      background: transparent;
+      background: rgba(0,0,0,0.3);
       color: #00ffe7;
       cursor: pointer;
       z-index: 1;
+      font-family: 'Orbitron';
     }
   </style>
 </head>
 
 <body>
-  <div class="overlay-gradient" id="cursor-highlight"></div>
+  <div class="grid-bg"></div>
+  <div class="cursor-effect" id="cursor-highlight"></div>
 
-  <button class="music-toggle" onclick="toggleMusic()">🎵 Toggle Music</button>
+  <button class="music-toggle" onclick="toggleMusic()">🎵 Music</button>
 
-  <div class="hud"></div>
+  <div class="title">👨‍💻 Welcome to Alen Titus' Cyber Terminal</div>
 
-  <div class="terminal">
-    <pre>
-┌──(AlenTitus㉿cyberlab)-[~]
-└─$ whoami
-👋 I'm Alen Titus
-🚀 Offensive Security Engineer | Builder | Explorer
-🧠 Passionate about red teaming, exploit dev & cyber ops.
-🌐 I live in code, coffee, and command lines.
-📫 github.com/Alen-Titus | 🧰 alen.titus@proton.me
-    </pre>
+  <div class="scanner"></div>
+
+  <div class="about">
+    <p><strong>whoami</strong>: 👋 I'm <span style="color:#fff">Alen Titus</span></p>
+    <p>💥 Offensive Security Engineer | Code Whisperer | Terminal Enthusiast</p>
+    <p>💻 Passionate about Red Teaming, Exploit Development & Live Ops</p>
+    <p>🧠 AI-integrated adversary simulation, malware crafting & detection evasion</p>
+    <p>📫 <a href="mailto:alen.titus@proton.me" style="color:#0ff">alen.titus@proton.me</a></p>
+    <p>🔗 <a href="https://github.com/Alen-Titus" style="color:#0ff">github.com/Alen-Titus</a></p>
   </div>
 
   <div class="bars">
@@ -164,4 +184,3 @@
 </body>
 
 </html>
-

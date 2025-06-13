@@ -122,57 +122,35 @@
       text-shadow: 0 0 5px #ff0066;
     }
 
-    .projects {
+    .skills-bubble {
       position: absolute;
-      bottom: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 20px;
-      z-index: 10;
-    }
-
-    .card {
+      color: white;
+      font-size: 1em;
+      padding: 8px 12px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 15px;
-      padding: 20px;
-      width: 200px;
-      text-align: center;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 15px rgba(255, 0, 102, 0.4);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 10px;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 0 10px rgba(255, 0, 102, 0.6);
+      transition: transform 0.3s ease;
+      animation: float 6s ease-in-out infinite alternate;
     }
 
-    .card:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px rgba(255, 0, 102, 0.7);
+    .skills-bubble:hover {
+      transform: scale(1.1);
     }
 
-    .skills-container {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #fff;
-      font-size: 1em;
-      z-index: 10;
-      opacity: 0.8;
-      animation: fadeUp 5s infinite alternate;
+    @keyframes float {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-10px); }
     }
 
-    .skills-left {
-      left: 10px;
-    }
-
-    .skills-right {
-      right: 10px;
-      text-align: right;
-    }
-
-    @keyframes fadeUp {
-      0% { transform: translateY(-50%) translateY(0); opacity: 0.7; }
-      100% { transform: translateY(-50%) translateY(-20px); opacity: 1; }
-    }
+    .pos-11 { top: 15%; left: 25%; }
+    .pos-9  { top: 40%; left: 10%; }
+    .pos-7  { bottom: 15%; left: 25%; }
+    .pos-1  { top: 15%; right: 25%; }
+    .pos-3  { top: 40%; right: 10%; }
+    .pos-5  { bottom: 15%; right: 25%; }
 
     .footer {
       position: absolute;
@@ -205,20 +183,15 @@
 
 <body>
   <div id="particles-js"></div>
-  <header><span class="glitch" data-text="👨‍💻 Alen Titus">👨‍💻 Alen Titus</span></header>
+  <header><span class="glitch" data-text="Alen Titus">Alen Titus</span></header>
   <div class="glowline"></div>
 
-  <div class="skills-container skills-left">
-    <p>🔍 Red Teaming</p>
-    <p>🧠 Adversarial AI</p>
-    <p>⚙️ Exploit Dev</p>
-  </div>
-
-  <div class="skills-container skills-right">
-    <p>💻 PowerShell Kungfu</p>
-    <p>🔧 Reverse Engineering</p>
-    <p>🌐 Offensive Tooling</p>
-  </div>
+  <div class="skills-bubble pos-11">Red Teaming</div>
+  <div class="skills-bubble pos-9">Adversarial AI</div>
+  <div class="skills-bubble pos-7">Exploit Development</div>
+  <div class="skills-bubble pos-1">PowerShell Kungfu</div>
+  <div class="skills-bubble pos-3">Reverse Engineering</div>
+  <div class="skills-bubble pos-5">Offensive Tooling</div>
 
   <div class="hero">
     <h2>Red Teaming | Exploit Dev | AI + Cyber</h2>
@@ -227,12 +200,6 @@
       I craft AI-driven red team tools, exploit generators, and immersive attack simulations.<br>
       Fueled by neon, logic, and late-night terminal sessions.
     </p>
-  </div>
-
-  <div class="projects">
-    <div class="card">⚙️ AI-Powered Red Team Tool</div>
-    <div class="card">💥 Exploit Generator</div>
-    <div class="card">🧠 Adversarial LLM Testing</div>
   </div>
 
   <div class="footer">
@@ -301,5 +268,3 @@
 </body>
 
 </html>
-
-
